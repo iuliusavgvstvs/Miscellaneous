@@ -37,10 +37,11 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Unit>> Edit(Guid id, Edit.Command comand)
+
+        public async Task<ActionResult<Unit>> Edit(Guid id, Edit.Command command)
         {
-            comand.Id = id;
-            return await _mediator.Send(comand);
+            command.Id = id;
+            return await _mediator.Send(command); 
         }
 
         [HttpDelete("{id}")]

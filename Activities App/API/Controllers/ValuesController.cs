@@ -17,7 +17,6 @@ namespace API.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<ValuesController> _logger;
         private readonly DataContext _context;
 
         public ValuesController(DataContext context)
