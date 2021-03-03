@@ -1,22 +1,25 @@
-import { action, makeAutoObservable, computed, configure, runInAction } from "mobx";
-import { createContext, SyntheticEvent } from "react";
+import { action, makeAutoObservable, computed, runInAction } from "mobx";
+import {  SyntheticEvent } from "react";
 import { IActivity } from "../models/activity";
-import Activities from "../api/agent";
+import {Activities} from "../api/agent";
 import {history} from '../..'
 import { toast } from "react-toastify";
+import { RootStore } from "./rootStore";
 
-configure({enforceActions: 'always'})
+export default class ActivityStore {
 
-class ActivityStore {
+  rootStore: RootStore;
+  constructor(rootStore: RootStore){
+    makeAutoObservable(this);
+    this.rootStore = rootStore;
+  }
+
   activityRegistry = new Map();
   loadingInitial = false;
   activity: IActivity | null = null;
 	submitting = false;
   target = '';
 
-  constructor() {
-    makeAutoObservable(this);
-  }
 
   @computed get activitiesByDate() {
     return this.groupActivitiesByDate(Array.from(this.activityRegistry.values()));
@@ -46,7 +49,6 @@ class ActivityStore {
       runInAction(() => {
         this.loadingInitial = false;
       })
-      console.log(error);
     }
   };
 
@@ -149,4 +151,4 @@ class ActivityStore {
 
 }
 
-export default createContext(new ActivityStore());
+
