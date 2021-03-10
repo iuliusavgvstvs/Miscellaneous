@@ -5,6 +5,7 @@ import {Activities} from "../api/agent";
 import {history} from '../..'
 import { toast } from "react-toastify";
 import { RootStore } from "./rootStore";
+import { createAttendee, setActivityProps } from "../common/util/util";
 
 export default class ActivityStore {
 
@@ -19,6 +20,7 @@ export default class ActivityStore {
   activity: IActivity | null = null;
 	submitting = false;
   target = '';
+  loading = false;
 
 
   @computed get activitiesByDate() {
@@ -40,7 +42,7 @@ export default class ActivityStore {
 			const activities = await Activities.list();
       runInAction(() => {
         activities.forEach((activity) => {
-          activity.date = new Date(activity.date)
+          setActivityProps(activity, this.rootStore.userStore.user!);
           this.activityRegistry.set(activity.id,activity);
         });
         this.loadingInitial = false;
@@ -63,7 +65,7 @@ export default class ActivityStore {
       try{
         activity = await Activities.details(id);
         runInAction(() => {
-          activity.date = new Date(activity.date)
+          setActivityProps(activity, this.rootStore.userStore.user!);
           this.activity = activity;
           this.activityRegistry.set(activity.id,activity);
           this.loadingInitial = false;
@@ -72,8 +74,8 @@ export default class ActivityStore {
       } catch (error) {
         runInAction(() => {
           this.loadingInitial = false;
-          console.log(error);
         })
+        console.log(error);
       }
     }
   }
@@ -95,6 +97,12 @@ export default class ActivityStore {
 		try{
 			await Activities.create(activity);
       runInAction(() =>{
+        const attendee = createAttendee(this.rootStore.userStore.user!);
+        activity.isHost = true;
+        attendee.isHost = true;
+        let attendees = [];
+        attendees.push(attendee);
+        activity.attendees = attendees;
         this.activityRegistry.set(activity.id, activity);
         this.submitting = false;
       });
@@ -149,6 +157,47 @@ export default class ActivityStore {
     this.activity = null;
   }
 
+  @action attendActivity = async () => {
+    const attendee = createAttendee(this.rootStore.userStore.user!);
+    this.loading = true;
+    try{
+      await Activities.attend(this.activity!.id);
+      runInAction(() => {
+        if(this.activity){
+          this.activity.attendees.push(attendee);
+          this.activity.isGoing = true;
+          this.activityRegistry.set(this.activity.id, this.activity);
+          this.loading = false;
+        }
+      })
+    }catch (error) {
+      runInAction(() => {
+        this.loading = false;
+      })
+      toast.error('Problem signing up to activity');
+    }
+  }
+
+  @action cancelAttendance = async () => {
+    try{
+      this.loading = true;
+      await Activities.unattend(this.activity!.id);
+      runInAction(() => {
+        if(this.activity){
+          this.activity.attendees = this.activity.attendees.filter(a => a.username !== this.rootStore.userStore.user?.username)
+          this.activity.isGoing = false;
+          this.activityRegistry.set(this.activity.id, this.activity);
+          this.loading = false;
+        }
+      })
+    } catch (error) {
+      runInAction(() => {
+        this.loading = false;
+      })
+      toast.error('Problem cancelling attendance')
+    }
+    
+  }
 }
 
 
