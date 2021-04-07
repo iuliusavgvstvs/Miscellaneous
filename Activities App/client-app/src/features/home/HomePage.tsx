@@ -4,7 +4,7 @@ import { Button, Container, Header, Segment, Image } from "semantic-ui-react";
 import { RootStoreContext } from "../../app/stores/rootStore";
 import LoginForm from "../user/LoginForm";
 import RegisterForm from "../user/RegisterForm";
-//comment
+
 const HomePage = () => {
   const rootStore = useContext(RootStoreContext);
   const { isLoggedIn, user } = rootStore.userStore;
