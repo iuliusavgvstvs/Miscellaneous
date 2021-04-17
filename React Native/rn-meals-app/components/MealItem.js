@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
+import CustomTextComponent from "./CustomTextComponent";
+
 
 const MealItem = (props) => {
   return (
@@ -25,9 +27,9 @@ const MealItem = (props) => {
             </ImageBackground>
           </View>
           <View style={{ ...styles.mealRow, ...styles.mealDetail }}>
-            <Text>{props.duration}m</Text>
-            <Text>{props.complexity.toUpperCase()}</Text>
-            <Text>{props.affordability.toUpperCase()}</Text>
+            <CustomTextComponent>{props.duration}m</CustomTextComponent>
+            <CustomTextComponent>{props.complexity.toUpperCase()}</CustomTextComponent>
+            <CustomTextComponent>{props.affordability.toUpperCase()}</CustomTextComponent>
           </View>
         </View>
       </TouchableOpacity>
