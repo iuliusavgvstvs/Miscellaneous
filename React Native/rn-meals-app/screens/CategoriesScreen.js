@@ -1,13 +1,9 @@
 import React, {useEffect} from "react";
-import {
-  StyleSheet,
-  FlatList,
-} from "react-native";
+import {FlatList} from "react-native";
 import { CATEGORIES } from "../data/test-data";
 import CategoryGridTile from '../components/CategoryGridTile'
 import {HeaderButtons, Item} from 'react-navigation-header-buttons'
 import CustomHeaderButton from '../components/CustomHeaderButton'
-
 
 const CategoriesScreen = (props) => {
 
@@ -36,14 +32,5 @@ const CategoriesScreen = (props) => {
 CategoriesScreen.navigationOptions = {
   headerTitle: "Meal Categories",
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-});
 
 export default CategoriesScreen;

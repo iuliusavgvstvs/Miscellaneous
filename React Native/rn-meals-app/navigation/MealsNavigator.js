@@ -18,9 +18,9 @@ import FiltersScreen from '../screens/FiltersScreen'
 const animationConfig = {
   animation: "spring",
   config: {
-    stiffness: 1000,
-    damping: 200,
-    mass: 3,
+    stiffness: 100,
+    damping: 100,
+    mass: 2,
     overshootClamping: false,
     restDisplacementThreshold: 0.01,
     restSpeedThreshold: 0.01,
@@ -30,7 +30,7 @@ const animationConfig = {
 const animationCloseConfig = {
   animation: "timing",
   config: {
-    duration: 500,
+    duration: 250,
     easing: Easing.linear,
   },
 };

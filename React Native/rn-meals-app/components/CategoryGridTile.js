@@ -5,7 +5,7 @@ import {
   Text,
   TouchableOpacity,
   Platform,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
 } from "react-native";
 
 const CategoryGridTile = (props) => {
@@ -15,8 +15,8 @@ const CategoryGridTile = (props) => {
     TouchableComp = TouchableNativeFeedback;
   }
   return (
-    <View style={styles.gridItem} > 
-      <TouchableComp style={{flex:1}}  onPress={props.onSelect}>
+    <View style={styles.gridItem}>
+      <TouchableComp style={{ flex: 1 }} onPress={props.onSelect}>
         <View
           style={{ ...styles.container, ...{ backgroundColor: props.color } }}
         >
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     margin: 15,
     height: 115,
     borderRadius: 10,
-    overflow: 'hidden'
+    overflow: "hidden",
   },
   container: {
     flex: 1,

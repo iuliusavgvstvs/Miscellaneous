@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react'
-import {View, StyleSheet, Text} from 'react-native'
 import MealList from '../components/MealList'
-import {MEALS} from "../data/test-data"
 import CustomHeaderButton from "../components/CustomHeaderButton"
 import {HeaderButtons, Item} from 'react-navigation-header-buttons'
+import {useSelector} from 'react-redux'
+import { View, StyleSheet } from 'react-native'
+import CustomTextComponent from '../components/CustomTextComponent'
 
 
 const FavouritesScreen = props => {
@@ -15,11 +16,27 @@ const FavouritesScreen = props => {
       </HeaderButtons>
     })
   },[props.navigation])
-  const favMeals = MEALS.filter(meal => meal.id==='m1' || meal.id==='m2')
+
+  const availableMeals = useSelector(state => state.meals.favouriteMeals);
+  if(availableMeals.length === 0 || !availableMeals){
+    return(
+      <View style={styles.content}>
+        <CustomTextComponent>No favourite meals found. Start adding some!</CustomTextComponent>
+      </View>
+    )
+  }
   return (
-    <MealList listData={favMeals} navigation={props.navigation}/>
+    <MealList listData={availableMeals} navigation={props.navigation}/>
   );
 };
+
+const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
 
 export default FavouritesScreen;
 
